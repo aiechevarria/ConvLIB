@@ -1,0 +1,6 @@
+# +---------------------------------+
+# |  BICAMERAL VLEN 1024            |
+# +---------------------------------+
+# VectorLen	MaxRegisters
+# This only supports 128b !!
+128	32

@@ -7,10 +7,10 @@ include Makefile.inc
 OPTFLAGS=
 ifneq ($(MAKECMDGOALS),clean)
     ifeq ($(arch), riscv)
-        CC       = riscv64-unknown-linux-gnu-gcc
-        CLINKER  = riscv64-unknown-linux-gnu-gcc
+        CC       = /opt/riscv-gcc-new/bin/riscv64-unknown-linux-gnu-gcc
+        CLINKER  = /opt/riscv-gcc-new/bin/riscv64-unknown-linux-gnu-gcc
         #OPTFLAGS   +=  -O3 -fopenmp -march=rv64imafdcv0p7_zfh_xtheadc -mabi=lp64d -mtune=c910
-        OPTFLAGS = -O0 -g3 -march=rv64gcv0p7_zfh_xtheadc -mabi=lp64d -DFP32 -mtune=c906 -static -DRISCV 
+        OPTFLAGS = -O0 -g3 -march=rv64gcv -mabi=lp64d -DFP32 -static -DRISCV 
     else ifeq ($(arch), armv8)
         CC       = gcc
         CLINKER  = gcc

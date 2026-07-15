@@ -47,7 +47,7 @@ fi
 if [ ! -d $OUTPATH ]; then
    mkdir -p $OUTPATH
 else
-   RUNID=$(ls $OUTPATH | wc -l)
+RUNID=$(ls $OUTPATH | wc -l)
 fi
 
 if [ $# -eq 1 ]; then
@@ -81,7 +81,7 @@ sys_arch=$(uname -p)
 if [ "$sys_arch" = "aarch64" ]; then
   taskset -c $cpus ./build/convolution_driver.x "cnn" $CONFIGFILE $TMIN $TEST $DEBUG $OUTCSV $MR $NR $THREADS $ALGORITHM $GEMM $BESTOF "cache-arch/"$PLATFORM $MC $NC $KC $PARALLEL_LOOP
 else
-  qemu-riscv64 -cpu c906fdv ./build/convolution_driver.x "cnn" $CONFIGFILE $TMIN $TEST $DEBUG $OUTCSV $MR $NR $THREADS $ALGORITHM $GEMM $BESTOF "cache-arch/"$PLATFORM $MC $NC $KC $PARALLEL_LOOP
+  caveat --cores=1 ./build/convolution_driver.x "cnn" $CONFIGFILE $TMIN $TEST $DEBUG $OUTCSV $MR $NR $THREADS $ALGORITHM $GEMM $BESTOF "cache-arch/"$PLATFORM $MC $NC $KC $PARALLEL_LOOP
 fi
 
 
