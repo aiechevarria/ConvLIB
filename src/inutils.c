@@ -123,6 +123,10 @@ void set_CNN(int col, int cnn_num, char *tmp, int type, cnn_t *cnn) {
 
 testConfig_t* new_CNN_Test_Config(char * argv[]) {
   FILE *fd_conf = fopen(argv[2], "r"); //open config file
+  if (!fd_conf) {
+    printf("ERROR: Configuration file '%s' NOT found.\n", argv[2]);
+    exit(-1);
+  }
   char line[512];
   size_t len = 0;
   ssize_t read;
@@ -142,6 +146,10 @@ testConfig_t* new_CNN_Test_Config(char * argv[]) {
   new_testConfig->test   = argv[4][0];
   new_testConfig->debug  = argv[5][0];
   new_testConfig->fd_csv = fopen(argv[6], "w");
+  if (!new_testConfig->fd_csv) {
+    printf("ERROR: Could not open output CSV file '%s' for writing.\n", argv[6]);
+    exit(-1);
+  }
   new_testConfig->MR     = atoi(argv[7]);
   new_testConfig->NR     = atoi(argv[8]);
   new_testConfig->TH     = atoi(argv[9]);
@@ -220,7 +228,7 @@ testConfig_t* new_CNN_Test_Config(char * argv[]) {
     type = BATCH_TYPE;
  
    
-  while (fgets(line, 512, fd_conf) != NULL)
+  while (fgets(line, 512, fd_conf) != NULL) {
     if (line[0] != '#') {      
       col = 0;
       tmp = strtok(line, delimiter);
@@ -237,6 +245,8 @@ testConfig_t* new_CNN_Test_Config(char * argv[]) {
       }
       cnn_num++;
     }
+  }
+
   fclose(fd_conf); 
   
 

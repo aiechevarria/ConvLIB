@@ -53,6 +53,10 @@ size_t getline(char **restrict buffer, size_t *restrict size,
 */
 testConfig_t* new_CNN_Test_Config(char * argv[]) {
   FILE *fd_conf = fopen(argv[21], "r"); //open config file
+  if (!fd_conf) {
+    printf("ERROR: Configuration file '%s' NOT found.\n", argv[21]);
+    exit(-1);
+  }
   char line[512];
   const char delimiter[] = "\t";
   char *tmp;

@@ -117,24 +117,24 @@ void gemm_blis_B3A2C0( char orderA, char orderB, char orderC,
     //=========================================== LOOP 3 PARALLELIZATION =======================================//
     for ( jc=0; jc<n; jc+=NC ) {
       nc = min(n-jc, NC);
-      int its_nc = (int) ceil((double)nc/NR/omp_get_num_threads());
+      int its_nc = (int) ceil((double)nc/NR/1);
       for ( pc=0; pc<k; pc+=KC ) {
         kc = min(k-pc, KC);
-        Bptr = &Bcol(pc,jc+its_nc*NR*omp_get_thread_num());
+        Bptr = &Bcol(pc,jc+its_nc*NR*0);
 
-        pack_CB( orderB, transB, kc, min(its_nc*NR, nc - its_nc*NR*omp_get_thread_num()), Bptr, ldB, Bc+kc*its_nc*NR*omp_get_thread_num(), NR);
+        pack_CB( orderB, transB, kc, min(its_nc*NR, nc - its_nc*NR*0), Bptr, ldB, Bc+kc*its_nc*NR*0, NR);
 
         if ( pc==0 )  betaI = beta;
         else betaI = one;
 
-        int its_m = (int) ceil((double)m/MC/omp_get_num_threads());
-        Acptr = Ac + ((MC + MR )* (KC + 1)) * omp_get_thread_num();
+        int its_m = (int) ceil((double)m/MC/1);
+        Acptr = Ac + ((MC + MR )* (KC + 1)) * 0;
 
         #ifdef OMP_ENABLE
           #pragma omp barrier
         #endif
 
-        for ( ic=omp_get_thread_num()*(its_m * MC); ic<min(m, (omp_get_thread_num()+1) * (its_m * MC)); ic+=MC ) {
+        for ( ic=0*(its_m * MC); ic<min(m, (0+1) * (its_m * MC)); ic+=MC ) {
           mc = min(m-ic, MC);
           Aptr = &Acol(ic, pc);
 
@@ -346,7 +346,7 @@ void gemm_blis_A3B2C0( char orderA, char orderB, char orderC,
     //=========================================== LOOP 3 PARALLELIZATION =======================================//
     for ( ic=0; ic<m; ic+=MC ) {
       mc = min(m-ic, MC);
-      int its_mc = (int) ceil((double)mc/MR/omp_get_num_threads());
+      int its_mc = (int) ceil((double)mc/MR/1);
 
       for ( pc=0; pc<k; pc+=KC ) {
         kc = min(k-pc, KC);
@@ -358,13 +358,13 @@ void gemm_blis_A3B2C0( char orderA, char orderB, char orderC,
         if ( pc==0 ) betaI = beta;
         else betaI = one;
 
-        int its_n = (int) ceil((double)n/NC/omp_get_num_threads());
+        int its_n = (int) ceil((double)n/NC/1);
         Bcptr = Bc + ((NC + NR )* (KC + 1)) * th_id;
 
         #ifdef OMP_ENABLE
         #pragma omp barrier
         #endif
-        for ( jc=omp_get_thread_num()*(its_n * NC); jc<min(n, (th_id+1) * (its_n * NC)); jc+=NC ) {
+        for ( jc=0*(its_n * NC); jc<min(n, (th_id+1) * (its_n * NC)); jc+=NC ) {
           nc = min(n-jc, NC);
           Bptr = &Bcol(pc,jc);
 
@@ -398,7 +398,7 @@ void gemm_blis_A3B2C0( char orderA, char orderB, char orderC,
     //=========================================== LOOP 4 PARALLELIZATION =======================================//
     for ( ic=0; ic<m; ic+=MC ) {
       mc = min(m-ic, MC);
-      int its_mc = (int) ceil((double)mc/MR/omp_get_num_threads());
+      int its_mc = (int) ceil((double)mc/MR/1);
 
       for ( pc=0; pc<k; pc+=KC ) {
         kc = min(k-pc, KC);
@@ -449,7 +449,7 @@ void gemm_blis_A3B2C0( char orderA, char orderB, char orderC,
     //=========================================== LOOP 5 PARALLELIZATION =======================================//
     for ( ic=0; ic<m; ic+=MC ) {
       mc = min(m-ic, MC);
-      int its_mc = (int) ceil((double)mc/MR/omp_get_num_threads());
+      int its_mc = (int) ceil((double)mc/MR/1);
 
       for ( pc=0; pc<k; pc+=KC ) {
         kc = min(k-pc, KC);

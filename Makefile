@@ -7,8 +7,8 @@ include Makefile.inc
 OPTFLAGS=
 ifneq ($(MAKECMDGOALS),clean)
     ifeq ($(arch), riscv)
-        CC       = /opt/riscv-gcc-new/bin/riscv64-unknown-linux-gnu-gcc
-        CLINKER  = /opt/riscv-gcc-new/bin/riscv64-unknown-linux-gnu-gcc
+        CC       = /opt/riscv-gcc-13.2.0/bin/riscv64-unknown-linux-gnu-gcc
+        CLINKER  = /opt/riscv-gcc-13.2.0/bin/riscv64-unknown-linux-gnu-gcc
         #OPTFLAGS   +=  -O3 -fopenmp -march=rv64imafdcv0p7_zfh_xtheadc -mabi=lp64d -mtune=c910
         OPTFLAGS = -O3 -march=rv64gcvzfh -mabi=lp64d -static  -DRISCV -DFP32
     else ifeq ($(arch), armv8)
@@ -22,7 +22,7 @@ endif
 
 
 #------------------------------------------
-OPTFLAGS   += -fopenmp -DOMP_ENABLE
+OPTFLAGS   +=
 OBJDIR      = build
 BIN         = convolution_driver.x
 #------------------------------------------
