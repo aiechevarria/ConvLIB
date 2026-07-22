@@ -80,7 +80,7 @@ void gemm_blis_B3A2C0( char orderA, char orderB, char orderC,
 	for ( ic=0; ic<m; ic+=MC ) {
           mc = min(m-ic, MC); 
           Aptr = &Acol(ic, pc);
-          pack_RB( orderA, transA, mc, kc, Aptr, ldA, Ac, MR);
+          vpack_8MR_RB( orderA, transA, mc, kc, Aptr, ldA, Ac, MR);
           
           for (jr=0; jr<nc; jr+=NR ) {
             nr = min(nc-jr, NR); 
@@ -521,6 +521,38 @@ void pack_RB( char orderM, char transM, int mc, int nc, DTYPE *M, int ldM, DTYPE
         k += (RR-rr);
       }
     }
+}
+
+void vpack_8MR_RB( char orderM, char transM, int mc, int nc, DTYPE *M, int ldM, DTYPE *Mc, int RR ){
+/*
+  BLIS pack for M-->Mc
+*/
+
+  int    i, j, ii, k, rr;
+  if (RR == 8) {
+    for ( i=0; i<mc; i+=RR ) { 
+      k = i*nc;
+      int32_t vl = __riscv_vsetvl_e32m2(mc - i);
+      for ( j=0; j<nc; j++ ) {
+        vfloat32m2_t vvals = __riscv_vle32_v_f32m2(&Mcol(i, j), vl);
+	 __riscv_vse32_v_f32m2(&Mc[k], vvals, vl);
+	k += RR;
+      }
+    }
+  } else {
+    for ( i=0; i<mc; i+=RR ) { 
+      k = i*nc;
+      rr = min( mc-i, RR );
+        for ( j=0; j<nc; j++ ) {
+          for ( ii=0; ii<rr; ii++ ) {
+	    Mc[k] = Mcol(i+ii, j);
+            k++;
+          } 
+          k += (RR-rr);
+        }
+      }
+  }
+
 }
 
 void pack_CB( char orderM, char transM, int mc, int nc, DTYPE *M, int ldM, DTYPE *Mc, int RR ){

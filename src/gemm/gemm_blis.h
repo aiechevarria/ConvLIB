@@ -11,6 +11,8 @@
 
 #ifdef ARMV8
   #include <arm_neon.h>
+#elif RISCV
+  #include <riscv_vector.h>
 #endif
 
 #ifndef max
@@ -54,5 +56,6 @@ void unpack_CB( char, char, int, int, DTYPE *, int, DTYPE *, int );
 //-----------------------------------------------------------------------------------
 void pack_RB_v( char, char, int, int, DTYPE *, int, DTYPE *, int );
 void pack_CB_v( char, char, int, int, DTYPE *, int, DTYPE *, int );
+void vpack_8MR_RB( char orderM, char transM, int mc, int nc, DTYPE *M, int ldM, DTYPE *Mc, int RR );
 //-----------------------------------------------------------------------------------
 

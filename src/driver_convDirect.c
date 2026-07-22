@@ -332,8 +332,8 @@ Please, enable it in Makefile.inc and rebuild the driver.\n"); exit(-1); }
         ldFB2 = Co_Nr*ldFB3;
         ldFB1 = s*ldFB2;
          
-        // generate_tensor4D( n, h, w, c, D, ldD1, ldD2, ldD3 );
-        // generate_tensor4D( c, r, s, k, F, ldF1, ldF2, ldF3 );
+        generate_tensor4D( n, h, w, c, D, ldD1, ldD2, ldD3 );
+        generate_tensor4D( c, r, s, k, F, ldF1, ldF2, ldF3 );
 
         // Set result to zeros
         for ( in=0; in<n; in++ )
@@ -382,15 +382,15 @@ Please, enable it in Makefile.inc and rebuild the driver.\n"); exit(-1); }
             #endif
 	  }
 	}
-   
+
 
         time  = 0.0; 
         t1    = dclock();
         nreps = 0;
         while ( time <= tmin ) {
           if (strcmp("LOWERING", ALG)==0) {
-            // im2row(DEXT, c * r * s, D, n, h, w, c, ho, wo, r,
-	          //  s, 0, 0, 1, 1, 1, 1, TH);
+            im2row(DEXT, c * r * s, D, n, h, w, c, ho, wo, r,
+	           s, 0, 0, 1, 1, 1, 1, TH);
 	    mm = k;
 	    nn = ho * wo * n;
 	    kk = r * s * c;
