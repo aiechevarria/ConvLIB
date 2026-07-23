@@ -136,6 +136,11 @@ int main(int argc, char *argv[]) {
 
   tmin    = testConf->tmin;
   tformat = testConf->format;
+
+  #ifndef OMP_ENABLE
+    testConf->TH = 1;
+  #endif
+
   TH      = testConf->TH;
 
   ALG     = testConf->ALG; 

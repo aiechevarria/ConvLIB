@@ -151,6 +151,10 @@ void convDirect_block_blis( int t,     int Co,   int Ci,
 
   DTYPE *Y_ptr;
 
+  #ifndef OMP_ENABLE
+  TH = 1;
+  #endif
+
   if (TH == 1) {
     for ( h=0; h<t; h++ ) 
        for ( i=0,i2=0; i<Ci; i+=CIB,i2++ ) { 

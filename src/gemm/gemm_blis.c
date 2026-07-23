@@ -55,6 +55,10 @@ void gemm_blis_B3A2C0( char orderA, char orderB, char orderC,
 
   DTYPE *Ctmp_th;
 
+  #ifndef OMP_ENABLE
+  TH = 1;
+  #endif
+
   #if defined(CHECK)
   #include "check_params.h"
   #endif
@@ -285,6 +289,10 @@ void gemm_blis_A3B2C0( char orderA, char orderB, char orderC,
   DTYPE  zero = 0.0, one = 1.0, betaI;
   DTYPE  *Aptr, *Bptr, *Cptr, *Bcptr;
   DTYPE *Ctmp_th;
+
+  #ifndef OMP_ENABLE
+  TH = 1;
+  #endif
 
   #if defined(CHECK)
   #include "check_params.h"
