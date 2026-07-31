@@ -31,6 +31,8 @@
 
 #include "gemm_blis.h"
 
+#define ROI_START() asm volatile("li a7, 0x777; ecall" ::: "a7")
+#define ROI_END()  asm volatile("li a7, 0x778; ecall" ::: "a7")
 
 int print_matrix(char *, char, size_t, int, DTYPE *, size_t);
 
@@ -48,6 +50,8 @@ void gemm_blis_B3A2C0( char orderA, char orderB, char orderC,
 		       int MR, int NR, int TH, int loop, DTYPE *Ctmp,
 		       ukernel_asm ukr, ukernel_edge ukr_edge) {
 
+
+      ROI_START();
   int    ic, jc, pc, mc, nc, kc, ir, jr, mr, nr, j, i; 
   DTYPE  zero = 0.0, one = 1.0, betaI; 
   DTYPE  *Aptr, *Bptr, *Cptr;
@@ -272,6 +276,8 @@ void gemm_blis_B3A2C0( char orderA, char orderB, char orderC,
     }
     #endif
   }
+
+  ROI_END();
 }
 
 void gemm_blis_A3B2C0( char orderA, char orderB, char orderC,
@@ -285,6 +291,7 @@ void gemm_blis_A3B2C0( char orderA, char orderB, char orderC,
 		       int MR, int NR, int TH, int loop, DTYPE *Ctmp,
 		       ukernel_asm ukr, ukernel_edge ukr_edge) {
 
+  ROI_START();
   int    ic, jc, pc, mc, nc, kc, ir, jr, mr, nr;
   DTYPE  zero = 0.0, one = 1.0, betaI;
   DTYPE  *Aptr, *Bptr, *Cptr, *Bcptr;
@@ -509,7 +516,7 @@ void gemm_blis_A3B2C0( char orderA, char orderB, char orderC,
     }
     #endif
   }
-
+  ROI_END();
 }
 
 
